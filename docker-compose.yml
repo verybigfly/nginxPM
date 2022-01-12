@@ -1,0 +1,30 @@
+﻿version: '3.9'
+services:
+  nginxpm:
+    container_name: nginxPM
+    build: .
+    restart: always
+    volumes:
+      - /data/nginxPM/data:/data
+      - /data/nginxPM/letsencrypt:/etc/letsencrypt
+      - /data/nginxPM/modules:/etc/nginx/modules
+    ports:
+      - 80:80
+      - 443:443
+      - 81:81
+    environment:
+      TZ: "Europe/PARIS"
+      DB_SQLITE_FILE: "/data/database.sqlite"
+  geoip-upd:
+    container_name: geoip-upd
+    image: maxmindinc/geoipupdate:latest
+    restart: unless-stopped
+    volumes:
+      - /data/nginxPM/data/geoip2:/usr/share/GeoIP
+    environment:
+      TZ: "Europe/PARIS"
+      GEOIPUPDATE_ACCOUNT_ID: 660082
+      GEOIPUPDATE_LICENSE_KEY: "O75nVlpxCojmMCeu"
+      GEOIPUPDATE_EDITION_IDS: "GeoLite2-City GeoLite2-Country GeoLite2-ASN"
+      GEOIPUPDATE_FREQUENCY: 12
+      GEOIPUPDATE_PRESERVE_FILE_TIMES: 1
