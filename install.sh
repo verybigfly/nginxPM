@@ -18,5 +18,8 @@ else
     docker-compose up -d nginxpm
     sleep 20
     docker-compose down
-    
+    wget https://raw.githubusercontent.com/verybigfly/nginxPM-Custom/master/compile-geoip2.sh
+    mv compile-geoip2.sh ./data/data/
+    chmod +x ./data/data/compile-geoip2.sh
+    wget 
 fi
