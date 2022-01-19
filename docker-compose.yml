@@ -15,3 +15,17 @@ services:
     environment:
       TZ: "Europe/PARIS"
       DB_SQLITE_FILE: "/data/database.sqlite"
+
+  geoip-upd:
+    container_name: geoip-upd
+    image: maxmindinc/geoipupdate:latest
+    restart: unless-stopped
+    volumes:
+      - /dockers/nginx-proxym/data/geoip2:/usr/share/GeoIP
+    environment:
+      TZ: "Europe/PARIS"
+      GEOIPUPDATE_ACCOUNT_ID: XXXXXX
+      GEOIPUPDATE_LICENSE_KEY: XXXXXXXXXXXXXXXXX
+      GEOIPUPDATE_EDITION_IDS: "GeoLite2-City GeoLite2-Country GeoLite2-ASN"    # Bases à télécharger
+      GEOIPUPDATE_FREQUENCY: 12                # Màj toutes les 12h
+      GEOIPUPDATE_PRESERVE_FILE_TIMES: 1       # Conserver la date originale de création des fichiers.

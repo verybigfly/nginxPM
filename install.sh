@@ -1,7 +1,7 @@
 ﻿#!/bin/bash
 test -f ./docker-compose.yml && echo "Fichier docker-compose.yml Présent" || echo "Téléchargement du docker-compose.yml" && wget https://raw.githubusercontent.com/verybigfly/nginxPM-Custom/master/docker-compose.yml
-GEOIPACCOUNT='cat docker-compose.yml | grep -o "GEOIPUPDATE_ACCOUNT_ID: xxxxxx" | wc -l'
-GEOIPLICENSE='cat docker-compose.yml | grep -o "GEOIPUPDATE_LICENSE_KEY: xxxxxxxxxxxxxxxx | wc -l'
+GEOIPACCOUNT='cat docker-compose.yml | grep -o "GEOIPUPDATE_ACCOUNT_ID: XXXXXX" | wc -l'
+GEOIPLICENSE='cat docker-compose.yml | grep -o "GEOIPUPDATE_LICENSE_KEY: XXXXXXXXXXXXXXXXX | wc -l'
 if [ -x "$(command -v docker)" ] && [ -x "$(command -v docker-compose)" ]; then
     echo "Docker est bien installer"
 else
@@ -16,10 +16,26 @@ then
 else
     docker-compose pull
     docker-compose up -d nginxpm
-    sleep 20
-    docker-compose down
     wget https://raw.githubusercontent.com/verybigfly/nginxPM-Custom/master/compile-geoip2.sh
     mv compile-geoip2.sh ./data/data/
     chmod +x ./data/data/compile-geoip2.sh
-    wget 
+    wget https://raw.githubusercontent.com/verybigfly/nginxPM-Custom/master/entrypoint.sh
+    mv entrypoint.sh ./data/data/
+    chmod +x ./data/data/entrypoint.sh
+    sed -i '6i\    entrypoint: "/data/entrypoint.sh"' docker-compose.yml
+    docker-compose up -d
+    test -f ./data/data/nginx/custom/http_top.conf && echo "let's  go" || echo -e 'charset utf-8;\ngeoip2 /data/geoip2/GeoLite2-City.mmdb {\n auto_reload 3h;\n $geoip2_metadata_country_build metadata build_epoch;\n $geoip2_data_country_code default=XX source=$remote_addr country iso_code;\n $geoip2_data_country_name default=- country names fr;\n $geoip2_data_city_name default=- city names fr;\n $geoip2_data_region_name default=- subdivisions 0 names fr;\n}\ngeo $allowed_ip {\n default no;\n 192.168.1.0/24 yes;\n}\n \nmap $geoip2_data_country_code $allowed_country {\n default $allowed_ip;\n FR yes;\n}\nlog_format proxy_geo escape=json '"'"'[$time_local] [Client $remote_addr] [$allowed_country $geoip2_data_country_code $geoip2_data_country_name $geoip2_data_region_name $geoip2_data_city_name] "$http_user_agent" '"'"'\n                                 '"'"'$upstream_cache_status $upstream_status $status - $request_method $scheme $host "$request_uri" [Length $body_bytes_sent] [Gzip $gzip_ratio] [Sent-to $server] "$http_referer"'"'"';' > ./data/data/nginx/custom/http_top.conf
+    echo "-------------------------------------------------"
+    echo "-------------Installation Terminer---------------"
+    echo "-------------------------------------------------"
+    echo "Pour terminer la configuration veuillez ajouter :"
+    echo "-------------------------------------------------" 
+    echo "access_log /data/logs/proxy-host-%ID-DE-HOST%_access-geo.log proxy_geo;"
+    echo "-------------------------------------------------"
+    echo "Dans la configuration avancée de chaque HOST en Web"
+    echo "En Remplaçant %ID-DE-HOST% par l'id du HOST"
+    echo "Puis recharger la config de nginx avec :"
+    echo "-------------------------------------------------"
+    echo "docker exec -it nginxpm nginx -s reload"
+    echo "-------------------------------------------------"
 fi
