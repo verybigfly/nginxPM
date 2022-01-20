@@ -21,7 +21,7 @@ services:
     image: maxmindinc/geoipupdate:latest
     restart: unless-stopped
     volumes:
-      - /dockers/nginx-proxym/data/geoip2:/usr/share/GeoIP
+      - ./data/data/geoip2:/usr/share/GeoIP
     environment:
       TZ: "Europe/PARIS"
       GEOIPUPDATE_ACCOUNT_ID: XXXXXX
