@@ -1,5 +1,5 @@
 ﻿#!/bin/bash
-wget https://raw.githubusercontent.com/verybigfly/nginxPM-Custom/master/docker-compose.yml
+test -f docker-compose.yml && echo "OK" || wget https://raw.githubusercontent.com/verybigfly/nginxPM-Custom/master/docker-compose.yml
 GEOIPACCOUNT=$(cat docker-compose.yml | grep -o "GEOIPUPDATE_ACCOUNT_ID: XXXXXX" | wc -l)
 GEOIPLICENSE=$(cat docker-compose.yml | grep -o "GEOIPUPDATE_LICENSE_KEY: XXXXXXXXXXXXXXXXX" | wc -l)
 if [ -x "$(command -v docker)" ] && [ -x "$(command -v docker-compose)" ]; then
@@ -9,8 +9,7 @@ else
     exit 0
 fi
 
-if test -z "$GEOIPACCOUNT"  || test -z "$GEOIPLICENSE" || { test -z "$GEOIPACCOUNT"  && test -z "$GEOIPLICENSE"; } ;
-then
+if [ "$GEOIPACCOUNT" == 1 ]  || [ "$GEOIPLICENSE" == 1 ] || { [ "$GEOIPACCOUNT" == 1 ]  && [ "$GEOIPLICENSE" == 1 ] ; } ; then
     echo "Veuillez remplir les champs GEOIPUPDATE_ACCOUNT_ID et GEOIPUPDATE_LICENSE_KEY avant de relancer le script"
     exit 0
 else

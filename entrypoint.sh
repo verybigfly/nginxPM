@@ -1,4 +1,5 @@
-﻿#!/bin/bash
+﻿
+#!/bin/bash
 apt-get update
 apt-get install -y libmaxminddb0 libmaxminddb-dev
 
