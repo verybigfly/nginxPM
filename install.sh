@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 test -f docker-compose.yml && echo "OK" || wget https://raw.githubusercontent.com/verybigfly/nginxPM-Custom/master/docker-compose.yml
 GEOIPACCOUNT=$(cat docker-compose.yml | grep -o "GEOIPUPDATE_ACCOUNT_ID: XXXXXX" | wc -l)
 GEOIPLICENSE=$(cat docker-compose.yml | grep -o "GEOIPUPDATE_LICENSE_KEY: XXXXXXXXXXXXXXXXX" | wc -l)
