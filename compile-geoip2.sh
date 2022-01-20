@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 apt-get install -y wget libpcre3 libpcre3-dev libssl-dev zlib1g-dev
 
 ngxversion=openresty-$(/etc/nginx/bin/openresty -v 2>&1|cut -d "/" -f2)
