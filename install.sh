@@ -2,7 +2,8 @@
 test -f docker-compose.yml && echo "OK" || wget https://raw.githubusercontent.com/verybigfly/nginxPM-Custom/master/docker-compose.yml
 GEOIPACCOUNT=$(cat docker-compose.yml | grep -o "GEOIPUPDATE_ACCOUNT_ID: XXXXXX" | wc -l)
 GEOIPLICENSE=$(cat docker-compose.yml | grep -o "GEOIPUPDATE_LICENSE_KEY: XXXXXXXXXXXXXXXXX" | wc -l)
-if [ -x "$(command -v docker)" ] && [ -x "$(command -v docker-compose)" ] || [ -x "$(command -v docker compose)" ] && [ -x "$(command -v docker)" ] ; then
+DCV2=$(docker compose version)
+if [ -x "$(command -v docker)" ] && [ -x "$(command -v docker-compose)" ] || test -Z "$DCV2" && [ -x "$(command -v docker)" ] ; then
     echo "Docker est bien installer"
 else
     echo "Veuillez installer docker et docker compose"
