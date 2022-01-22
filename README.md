@@ -1,24 +1,49 @@
 <p align="center">
 	<img src="https://nginxproxymanager.com/github.png">
-	<br><br>
-	<img src="https://img.shields.io/badge/version-2.9.15-green.svg?style=for-the-badge">
-	<a href="https://hub.docker.com/repository/docker/jc21/nginx-proxy-manager">
-		<img src="https://img.shields.io/docker/stars/jc21/nginx-proxy-manager.svg?style=for-the-badge">
-	</a>
-	<a href="https://hub.docker.com/repository/docker/jc21/nginx-proxy-manager">
-		<img src="https://img.shields.io/docker/pulls/jc21/nginx-proxy-manager.svg?style=for-the-badge">
-	</a>
-	<a href="https://ci.nginxproxymanager.com/blue/organizations/jenkins/nginx-proxy-manager/branches/">
-		<img src="https://img.shields.io/jenkins/build?jobUrl=https%3A%2F%2Fci.nginxproxymanager.com%2Fjob%2Fnginx-proxy-manager%2Fjob%2Fmaster&style=for-the-badge">
-	</a>
-	<a href="https://gitter.im/nginx-proxy-manager/community">
-		<img alt="Gitter" src="https://img.shields.io/gitter/room/nginx-proxy-manager/community?style=for-the-badge">
-	</a>
-	<a href="https://reddit.com/r/nginxproxymanager">
-		<img alt="Reddit" src="https://img.shields.io/reddit/subreddit-subscribers/nginxproxymanager?label=Reddit%20Community&style=for-the-badge">
-	</a>
 </p>
+
+# Script D'Installation de Nginx Proxy Manager Avec Restriction Geoip
 
 ## Prérequis
 
 - Avoir un Compte sur : [Maxmind Geoip Inscription](https://www.maxmind.com/en/geolite2/signup)
+- Avoir un "Account ID" et une "License Key" pour Geoip Update 3.1.1 ou plus récent obtensible ici : [Maxmind Geoip License Key](https://www.maxmind.com/en/accounts/current/license-key)
+- Avoir Docker d'installer : [Guide D'Installaation Docker](https://docs.docker.com/engine/install/)
+- Avoir Docker Compose d'installer (Ne fonctionne pas avec la V2) : [Guide D'Installaation Docker Compose](https://docs.docker.com/compose/install/)
+
+## Installation
+
+- Toutes les Commandes Sont a Executer en Root ou Avec Votre Utilisateur Docker
+- Allez Dans le Dossier ou Vous Souhaitez Installer NPM
+- Telechargez le Script D'Installation Sur le Serveur
+```bash
+wget https://raw.githubusercontent.com/verybigfly/nginxPM-Custom/master/install.sh
+```
+- Rendez le Executable
+```bash
+chmod +x install.sh
+```
+- Executez une Première Fois le Script
+```bash
+./install.sh
+```
+- Modifiez les Lignes "GEOIPUPDATE_ACCOUNT_ID" et "GEOIPUPDATE_EDITION_IDS" dans le docker-compose.yml par les Valeurs Corespondante
+```bash
+nano docker-compose.yml
+```
+- Relancez le Script
+```bash
+./install.sh
+```
+- A la Fin du Script il Faudra Attendre la Fin de la Compilation, Vous Pourrez la Suivre Avec la Commande
+```bash
+docker logs nginxPM
+```
+- N'Oubliez pas D'Ajoutez Cette Dans la Configuration Avancé de Chaque host En Remplaçant $HOSTID% Par L'ID ou le Nom de L'Host
+```conf
+access_log /data/logs/proxy-host-%HOSTID%_access-geo.log proxy_geo;
+```
+
+
+
+Merci au Site DomoPi Pour le Tutoriel D'installation de Base : https://domopi.eu/ajouter-la-geoip-a-nginx-proxy-manager/
