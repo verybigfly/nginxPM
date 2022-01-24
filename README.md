@@ -8,8 +8,8 @@
 
 - Avoir un Compte sur : [Maxmind Geoip Inscription](https://www.maxmind.com/en/geolite2/signup)
 - Avoir un "Account ID" et une "License Key" pour Geoip Update 3.1.1 ou plus récent obtensible ici : [Maxmind Geoip License Key](https://www.maxmind.com/en/accounts/current/license-key)
-- Avoir Docker d'installer : [Guide D'Installaation Docker](https://docs.docker.com/engine/install/)
-- Avoir Docker Compose d'installer (Ne fonctionne pas avec la V2) : [Guide D'Installaation Docker Compose](https://docs.docker.com/compose/install/)
+- Avoir Docker d'installer : [Guide D'Installation Docker](https://docs.docker.com/engine/install/)
+- Avoir Docker Compose d'installer (Ne fonctionne pas avec la V2) : [Guide D'Installation Docker Compose](https://docs.docker.com/compose/install/)
 
 ## Installation
 
